@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Percepción Proveedores 2025-II | C.I. Colombian Mint</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root {
+  --gold: #FFD700;
+  --gold2: #C5A000;
+  --gold3: #FFF0A0;
+  --cyan: #00D2FF;
+  --cyan2: #0099CC;
+  --cyan3: rgba(0,210,255,0.15);
+  --teal: #06D6A0;
+  --teal2: rgba(6,214,160,0.15);
+  --dark: #07080F;
+  --dark2: #0D0E18;
+  --card: rgba(255,255,255,0.04);
+  --card-border: rgba(0,210,255,0.2);
+  --green: #00E676;
+  --green2: rgba(0,230,118,0.15);
+  --red: #FF5252;
+  --red2: rgba(255,82,82,0.15);
+  --orange: #FFB703;
+  --orange2: rgba(255,183,3,0.15);
+  --yellow: #FFD600;
+  --text: #E8E8E8;
+  --text2: #999;
+  --radius: 18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--dark);font-family:'Montserrat',sans-serif;color:var(--text);}
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.deck{position:relative;width:100vw;height:100vh;z-index:1;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;padding:72px 48px 52px;animation:fadeUp .55s cubic-bezier(.22,1,.36,1);}
+.slide.active{display:flex;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+.header-bar{position:absolute;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;border-bottom:1px solid var(--card-border);background:rgba(7,8,15,0.75);backdrop-filter:blur(12px);z-index:100;}
+.logo-left{height:44px;width:auto;filter:drop-shadow(0 0 6px rgba(255,215,0,.4));}
+.logo-right{height:32px;width:auto;filter:brightness(1.2);}
+.header-label{font-size:1.15rem;color:var(--cyan2);letter-spacing:2px;text-transform:uppercase;}
+.slide-footer{position:absolute;bottom:0;left:0;right:0;height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;border-top:1px solid var(--card-border);font-size:1.16rem;color:var(--text2);background:rgba(7,8,15,.6);backdrop-filter:blur(8px);z-index:100;}
+.iso-badge{display:flex;align-items:center;gap:6px;background:rgba(255,215,0,.08);border:1px solid var(--gold2);border-radius:20px;padding:4px 12px;font-size:1.1rem;color:var(--gold);letter-spacing:1px;}
+.nav{position:fixed;bottom:16px;right:32px;z-index:200;display:flex;align-items:center;gap:10px;}
+.btn{background:rgba(0,0,0,.6);border:1px solid var(--cyan);color:var(--cyan);padding:8px 22px;border-radius:30px;font-size:1.06rem;font-weight:700;cursor:pointer;transition:all .25s;font-family:'Montserrat',sans-serif;text-transform:uppercase;letter-spacing:1px;}
+.btn:hover:not(:disabled){background:var(--cyan);color:#000;box-shadow:0 0 18px rgba(0,210,255,.5);}
+.btn:disabled{border-color:#333;color:#333;cursor:not-allowed;}
+#slideNum{font-size:1.06rem;color:var(--text2);min-width:50px;text-align:center;}
+#progressBar{position:fixed;top:64px;left:0;height:3px;background:linear-gradient(90deg,var(--cyan2),var(--cyan),var(--gold));transition:width .4s ease;z-index:200;box-shadow:0 0 8px rgba(0,210,255,.6);}
+.title-xl{font-family:'Bebas Neue',cursive;font-size:clamp(2.8rem,5vw,4.5rem);color:var(--cyan);letter-spacing:3px;line-height:1;}
+.title-lg{font-family:'Bebas Neue',cursive;font-size:clamp(2rem,3.5vw,3rem);color:var(--cyan);letter-spacing:2px;line-height:1;}
+.title-md{font-family:'Bebas Neue',cursive;font-size:clamp(1.4rem,2.5vw,2rem);color:var(--cyan);letter-spacing:2px;}
+.subtitle{font-size:clamp(.9rem,1.35vw,1.1rem);color:var(--text2);letter-spacing:3px;text-transform:uppercase;margin-top:6px;}
+.section-label{font-size:1.12rem;color:var(--cyan2);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;}
+.insight{background:rgba(0,210,255,0.06);border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;padding:12px 18px;font-size:1.1rem;color:var(--text2);margin-top:10px;font-style:italic;}
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:20px;backdrop-filter:blur(8px);transition:transform .25s,border-color .25s;}
+.card:hover{transform:translateY(-3px);border-color:rgba(0,210,255,.45);}
+.kpi-num{font-family:'Bebas Neue',cursive;font-size:clamp(2.5rem,5vw,4rem);color:var(--cyan);line-height:1;text-shadow:0 0 20px rgba(0,210,255,.3);}
+.kpi-label{font-size:1.06rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+.s5{color:var(--green);}
+.s4h{color:var(--teal);}
+.s4{color:var(--cyan);}
+.s3{color:var(--orange);}
+.s2{color:var(--red);}
+.badge{display:inline-flex;align-items:center;padding:4px 11px;border-radius:12px;font-size:1.15rem;font-weight:700;}
+.badge-green{background:var(--green2);color:var(--green);border:1px solid var(--green);}
+.badge-cyan{background:var(--cyan3);color:var(--cyan);border:1px solid var(--cyan2);}
+.badge-gold{background:var(--orange2);color:var(--gold);border:1px solid var(--gold2);}
+.badge-red{background:var(--red2);color:var(--red);border:1px solid var(--red);}
+.badge-teal{background:var(--teal2);color:var(--teal);border:1px solid var(--teal);}
+.bar-track{background:rgba(255,255,255,.08);border-radius:6px;height:10px;overflow:hidden;margin-top:6px;}
+.bar-fill{height:100%;border-radius:6px;transition:width 1s ease;}
+table{width:100%;border-collapse:separate;border-spacing:0 5px;font-size:1.08rem;}
+th{text-align:left;padding:11px 13px;color:var(--cyan);border-bottom:1px solid var(--card-border);font-size:1.16rem;letter-spacing:1px;text-transform:uppercase;}
+td{background:rgba(255,255,255,.03);padding:11px 13px;border:1px solid transparent;}
+tr td:first-child{border-radius:10px 0 0 10px;border-left:3px solid transparent;}
+tr td:last-child{border-radius:0 10px 10px 0;}
+tr:hover td:first-child{border-left-color:var(--cyan);}
+tr:hover td{background:rgba(0,210,255,.04);}
+.quote-card{background:rgba(255,255,255,.03);border:1px solid var(--card-border);border-radius:14px;padding:16px 20px;position:relative;}
+.quote-card::before{content:'"';position:absolute;top:-8px;left:14px;font-size:3rem;color:var(--cyan);opacity:.25;font-family:'Bebas Neue',cursive;line-height:1;}
+.quote-text{font-size:1.08rem;color:var(--text2);font-style:italic;line-height:1.65;}
+.quote-author{font-size:1rem;color:var(--cyan);font-weight:700;margin-top:8px;letter-spacing:1px;}
+.quote-score{position:absolute;top:12px;right:14px;}
+.plan-item{background:rgba(255,255,255,.03);border:1px solid var(--card-border);border-radius:14px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;border-left:4px solid var(--cyan);}
+.plan-num{background:var(--cyan);color:#000;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.05rem;flex-shrink:0;}
+/* Portada */
+#s1{justify-content:center;align-items:center;text-align:center;
+  background:radial-gradient(ellipse at 30% 40%, rgba(0,210,255,0.07) 0%, transparent 60%),
+             radial-gradient(ellipse at 70% 60%, rgba(255,215,0,0.04) 0%, transparent 60%),var(--dark2);}
+.cover-ring{width:220px;height:220px;border-radius:50%;border:2px solid rgba(0,210,255,.3);box-shadow:0 0 40px rgba(0,210,255,.15),inset 0 0 40px rgba(0,210,255,.05);display:flex;align-items:center;justify-content:center;margin:24px auto;position:relative;}
+.cover-ring::before{content:'';position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(0,210,255,.12);}
+.cover-ring::after{content:'';position:absolute;inset:-24px;border-radius:50%;border:1px dashed rgba(255,215,0,.1);animation:spin 30s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.cover-num{font-family:'Bebas Neue',cursive;font-size:5rem;color:var(--cyan);line-height:1;text-shadow:0 0 30px rgba(0,210,255,.4);}
+.cover-sub{font-size:1.16rem;color:var(--text2);letter-spacing:2px;}
+.meta-pill{background:rgba(0,210,255,0.08);border:1px solid rgba(0,210,255,.3);border-radius:20px;padding:7px 18px;font-size:1.06rem;color:var(--cyan);letter-spacing:1px;}
+.meta-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+<div id="progressBar" style="width:10%"></div>
+<div class="deck">
+
+<!-- ====== SLIDE 1: PORTADA ====== -->
+<div class="slide active" id="s1">
+  <div class="header-bar">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigu_vafcG5saLG0r13cHA0Y9geRGVEjPESWbHTVt9fegBAIB6QsTVDelYSmoTSb69y912nYTf3ckJC6FeS1OcEyvDA_u3rJUlc3T02BzfssvNRrrLOESObIVaeI0SE3yW7GM4J2VqmB9zrDf6xsc3UyIESHks1sJ8OkxxgBxHinI48TTYsTLHSffvDWA/w100-h90/Logo-versi%C3%B3n-final-2022.png" class="logo-left" alt="CI Mint">
+    <span class="header-label">Comité de Compras · Gerencia · 2026</span>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgzHJKDt6pmv91oY1l3emW3b-A8Gemlig1N2JG-OD_MVvelGlN6wsMEfVRmclY-tTtV6fhs7ib2h6AzLD7iRDiTWDCyS-4p0RAvrx3isFAD6jOl7UqAnRfkc-MYje1tnRuN89_46SelyRMj5G4adF3hKNoRY2a4NrsegRIsWt9qSgXWSBtQFr3wYB32YCa/w100-h46/logo%20capte.png" class="logo-right" alt="CAPTE">
+  </div>
+  <div class="cover-ring">
+    <div>
+      <div class="cover-num" id="coverNum">4.96</div>
+      <div class="cover-sub">PERCEPCIÓN GLOBAL</div>
+    </div>
+  </div>
+  <h1 class="title-xl" style="font-size:clamp(2rem,4vw,3.4rem);color:var(--gold);">ENCUESTA DE PERCEPCIÓN</h1>
+  <h2 style="font-family:'Bebas Neue';font-size:clamp(1.2rem,2.2vw,1.8rem);color:var(--cyan);letter-spacing:4px;margin-top:6px;">PROVEEDORES DE BIENES Y SERVICIOS · INFORME 2025 – II SEMESTRE</h2>
+  <p style="color:var(--text2);font-size:1.15rem;margin-top:8px;">C.I. Colombian Mint S.A.S. · Comercializadora Internacional de Metales Preciosos</p>
+  <div class="meta-pills">
+    <span class="meta-pill">17 Proveedores Evaluados</span>
+    <span class="meta-pill">7 Críticos · 10 No Críticos</span>
+    <span class="meta-pill">Ene – Feb 2026</span>
+    <span class="meta-pill">ISO 9001:2015 Certificada</span>
+    <span class="meta-pill">Proceso: Compras &amp; Calidad</span>
+  </div>
+  <div class="slide-footer">
+    <span>C.I. Colombian Mint S.A.S. | Percepción de Proveedores 2025 – II Semestre</span>
+    <span class="iso-badge">&#9679; ISO 9001:2015 · Cláusula 8.4</span>
+    <span>Presentación Comité de Compras</span>
+  </div>
+</div>
+
+<!-- ====== SLIDE 2: PANORAMA EJECUTIVO ====== -->
+<div class="slide" id="s2">
+  <div class="header-bar">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigu_vafcG5saLG0r13cHA0Y9geRGVEjPESWbHTVt9fegBAIB6QsTVDelYSmoTSb69y912nYTf3ckJC6FeS1OcEyvDA_u3rJUlc3T02BzfssvNRrrLOESObIVaeI0SE3yW7GM4J2VqmB9zrDf6xsc3UyIESHks1sJ8OkxxgBxHinI48TTYsTLHSffvDWA/w100-h90/Logo-versi%C3%B3n-final-2022.png" class="logo-left" alt="CI Mint">
+    <span class="header-label">Panorama Ejecutivo · KPIs Clave 2025-II</span>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgzHJKDt6pmv91oY1l3emW3b-A8Gemlig1N2JG-OD_MVvelGlN6wsMEfVRmclY-tTtV6fhs7ib2h6AzLD7iRDiTWDCyS-4p0RAvrx3isFAD6jOl7UqAnRfkc-MYje1tnRuN89_46SelyRMj5G4adF3hKNoRY2a4NrsegRIsWt9qSgXWSBtQFr3wYB32YCa/w100-h46/logo%20capte.png" class="logo-right" alt="CAPTE">
+  </div>
+  <div style="margin-bottom:12px;"><div class="title-lg">PANORAMA EJECUTIVO</div><div class="subtitle">Cifras clave · Encuesta 2025 – II Semestre</div></div>
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;flex-grow:1;align-content:center;">
+    <div class="card" style="text-align:center;border-top:3px solid var(--gold);">
+      <div class="section-label">Percepción Global</div>
+      <div class="kpi-num" style="color:var(--gold);" id="k1">0.00</div>
+      <div class="kpi-label">/ 5.0 puntos</div>
+      <div style="margin-top:8px;"><span class="badge badge-teal" style="font-size:1.12rem;">&#9650; +0.55% vs 2025-I</span></div>
+      <div class="bar-track" style="margin-top:8px;"><div class="bar-fill" style="width:0%;background:linear-gradient(90deg,var(--gold2),var(--gold));" data-w="99.3"></div></div>
+    </div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--cyan);">
+      <div class="section-label">Proveedores</div>
+      <div class="kpi-num" id="k2">0</div>
+      <div class="kpi-label">Respondieron</div>
+      <div style="margin-top:8px;"><span class="badge badge-cyan">7 Críticos · 10 N.C.</span></div>
+      <div class="bar-track" style="margin-top:8px;"><div class="bar-fill" style="width:0%;background:var(--cyan);" data-w="100"></div></div>
+    </div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--green);">
+      <div class="section-label">Promotores 5.0</div>
+      <div class="kpi-num s5" id="k3">0</div>
+      <div class="kpi-label">Calificación perfecta</div>
+      <div style="margin-top:8px;"><span class="badge badge-green">76.5% del total</span></div>
+      <div class="bar-track" style="margin-top:8px;"><div class="bar-fill" style="width:0%;background:var(--green);" data-w="76.5"></div></div>
+    </div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--teal);">
+      <div class="section-label">Alta Percepción</div>
+      <div class="kpi-num s4h" id="k4">0</div>
+      <div class="kpi-label">Score 4.8 – 4.9</div>
+      <div style="margin-top:8px;"><span class="badge badge-teal">23.5% del total</span></div>
+      <div class="bar-track" style="margin-top:8px;"><div class="bar-fill" style="width:0%;background:var(--teal);" data-w="23.5"></div></div>
+    </div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--green);background:rgba(0,230,118,.04);">
+      <div class="section-label">Plan de Mejora</div>
+      <div class="kpi-num s5" id="k5">0</div>
+      <div class="kpi-label">Score &lt; 4.5</div>
+      <div style="margin-top:8px;"><span class="badge badge-green">&#127942; Hito Histórico</span></div>
+      <div class="bar-track" style="margin-top:8px;"><div class="bar-fill" style="width:0%;background:var(--green);" data-w="0"></div></div>
+    </div>
+    <div class="card" style="text-align:center;border-top:3px solid var(--gold);">
+      <div class="section-label">Satisfacción del SGC</div>
+      <div class="kpi-num" style="color:var(--gold);font-size:2rem;">99.3%</div>
+      <div class="kpi-label">Equivalencia %</div>
+      <div style="margin-top:8px;"><span class="badge badge-gold">ISO 8.4 Cumplido</span></div>
+      <div class="bar-track" style="margin-top:8px;"><div class="bar-fill" style="width:0%;background:var(--gold);" data-w="99.3"></div></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;">
+    <div class="insight">
+      <strong style="color:var(--gold);">Insight ejecutivo:</strong> Con una calificación de <strong style="color:var(--cyan);">4.96/5.0</strong>, equivalente al <strong style="color:var(--cyan);">99.3% de percepción positiva</strong>, los proveedores ratifican que el proceso de compras de C.I. Colombian Mint opera con excelencia. El logro más notable: <strong style="color:var(--green);">ningún proveedor calificó por debajo de 4.5</strong>, eliminando completamente el plan de mejora. Este resultado supera el 2025-I (+0.55%).
+    </div>
+    <div class="insight" style="border-left-color:var(--green);">
+      <strong style="color:var(--green);">Segmentación por percepción:</strong> El <strong>76.5%</strong> de los proveedores (13 de 17) otorgó la calificación perfecta de 5.0, convirtiéndose en embajadores activos de la gestión de compras. El <strong>23.5%</strong> restante (4 proveedores) calificó entre 4.8 y 4.9 — zona de alta satisfacción. <strong>0% en plan de mejora.</strong>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>C.I. Colombian Mint S.A.S. | Percepción de Proveedores 2025 – II Semestre</span>
+    <span class="iso-badge">&#9679; ISO 9001:2015 · Cláusula 8.4</span>
+    <span>Slide 2 / 10</span>
+  </div>
+</div>
+
+<!-- ====== SLIDE 3: ANÁLISIS POR DIMENSIÓN ====== -->
+<div class="slide" id="s3">
+  <div class="header-bar">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigu_vafcG5saLG0r13cHA0Y9geRGVEjPESWbHTVt9fegBAIB6QsTVDelYSmoTSb69y912nYTf3ckJC6FeS1OcEyvDA_u3rJUlc3T02BzfssvNRrrLOESObIVaeI0SE3yW7GM4J2VqmB9zrDf6xsc3UyIESHks1sJ8OkxxgBxHinI48TTYsTLHSffvDWA/w100-h90/Logo-versi%C3%B3n-final-2022.png" class="logo-left" alt="CI Mint">
+    <span class="header-label">Análisis por Dimensión · Comparativo 2025-I vs 2025-II</span>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgzHJKDt6pmv91oY1l3emW3b-A8Gemlig1N2JG-OD_MVvelGlN6wsMEfVRmclY-tTtV6fhs7ib2h6AzLD7iRDiTWDCyS-4p0RAvrx3isFAD6jOl7UqAnRfkc-MYje1tnRuN89_46SelyRMj5G4adF3hKNoRY2a4NrsegRIsWt9qSgXWSBtQFr3wYB32YCa/w100-h46/logo%20capte.png" class="logo-right" alt="CAPTE">
+  </div>
+  <div style="margin-bottom:10px;"><div class="title-lg">ANÁLISIS POR DIMENSIÓN</div><div class="subtitle">Cinco dimensiones evaluadas · Fuente: Hoja "Consolidado de Resultados"</div></div>
+  <div style="display:grid;grid-template-columns:55% 45%;gap:18px;flex-grow:1;min-height:0;">
+    <div style="display:flex;flex-direction:column;gap:9px;overflow-y:auto;">
+      <div class="card" style="border-left:4px solid var(--orange);">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div class="section-label">Dimensión 1</div>
+            <strong style="font-size:1.08rem;">Contratación y Negociación</strong>
+            <div style="font-size:1.05rem;color:var(--text2);margin-top:2px;">Claridad en cotización · Tiempo de adjudicación</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;margin-left:10px;">
+            <span style="font-size:2rem;font-weight:900;color:var(--orange);">4.85</span>
+            <div style="font-size:1rem;color:var(--text2);">2025-I: 4.90 <span class="badge badge-red" style="font-size:1.09rem;">-1.02%</span></div>
+          </div>
+        </div>
+        <div class="bar-track" style="margin-top:7px;"><div class="bar-fill" style="width:0%;background:var(--orange);" data-w="97"></div></div>
+      </div>
+      <div class="card" style="border-left:4px solid var(--green);">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div class="section-label">Dimensión 2</div>
+            <strong style="font-size:1.08rem;">Comunicación y Gestión de la Relación</strong>
+            <div style="font-size:1.05rem;color:var(--text2);margin-top:2px;">Comunicación efectiva · Amabilidad y profesionalismo</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;margin-left:10px;">
+            <span style="font-size:2rem;font-weight:900;color:var(--green);">5.00</span>
+            <div style="font-size:1rem;color:var(--text2);">2025-I: 4.90 <span class="badge badge-green" style="font-size:1.09rem;">+2.04%</span></div>
+          </div>
+        </div>
+        <div class="bar-track" style="margin-top:7px;"><div class="bar-fill" style="width:0%;background:var(--green);" data-w="100"></div></div>
+      </div>
+      <div class="card" style="border-left:4px solid var(--teal);">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div class="section-label">Dimensión 3</div>
+            <strong style="font-size:1.08rem;">Procesos Operativos y Logísticos</strong>
+            <div style="font-size:1.05rem;color:var(--text2);margin-top:2px;">Horarios y logística · Verificación y aceptación ágil</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;margin-left:10px;">
+            <span style="font-size:2rem;font-weight:900;color:var(--teal);">4.95</span>
+            <div style="font-size:1rem;color:var(--text2);">2025-I: 4.90 <span class="badge badge-teal" style="font-size:1.09rem;">+1.02%</span></div>
+          </div>
+        </div>
+        <div class="bar-track" style="margin-top:7px;"><div class="bar-fill" style="width:0%;background:var(--teal);" data-w="99"></div></div>
+      </div>
+      <div class="card" style="border-left:4px solid var(--cyan);">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div class="section-label">Dimensión 4</div>
+            <strong style="font-size:1.08rem;">Facturación y Pagos</strong>
+            <div style="font-size:1.05rem;color:var(--text2);margin-top:2px;">Requisitos claros · Radicación eficiente · Pagos a tiempo</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;margin-left:10px;">
+            <span style="font-size:2rem;font-weight:900;color:var(--cyan);">5.00</span>
+            <div style="font-size:1rem;color:var(--text2);">2025-I: 4.97 <span class="badge badge-teal" style="font-size:1.09rem;">+0.69%</span></div>
+          </div>
+        </div>
+        <div class="bar-track" style="margin-top:7px;"><div class="bar-fill" style="width:0%;background:var(--cyan);" data-w="100"></div></div>
+      </div>
+      <div class="card" style="border-left:4px solid var(--gold);">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div class="section-label">Dimensión 5</div>
+            <strong style="font-size:1.08rem;">Satisfacción General y Recomendación</strong>
+            <div style="font-size:1.05rem;color:var(--text2);margin-top:2px;">Satisfacción relación comercial · ¿Recomendaría a Colombian Mint?</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;margin-left:10px;">
+            <span style="font-size:2rem;font-weight:900;color:var(--gold);">5.00</span>
+            <div style="font-size:1rem;color:var(--text2);">2025-I: 5.00 <span class="badge badge-cyan" style="font-size:1.09rem;">0.0%</span></div>
+          </div>
+        </div>
+        <div class="bar-track" style="margin-top:7px;"><div class="bar-fill" style="width:0%;background:var(--gold);" data-w="100"></div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="flex-grow:1;position:relative;min-height:260px;"><canvas id="radarChart"></canvas></div>
+      <div class="insight" style="margin-top:0;font-size:1.09rem;">
+        <strong style="color:var(--gold);">Lectura estratégica:</strong> Las dimensiones de <strong>Comunicación, Facturación y Satisfacción</strong> alcanzaron el máximo posible (5.0). La dimensión de <strong>Contratación y Negociación</strong> (4.85) es la única con leve caída (-1.02%), específicamente en tiempo de adjudicación. Oportunidad clara para 2026.
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>C.I. Colombian Mint S.A.S. | Percepción de Proveedores 2025 – II Semestre</span>
+    <span class="iso-badge">&#9679; ISO 9001:2015 · Cláusula 8.4</span>
+    <span>Slide 3 / 10</span>
+  </div>
+</div>
+
+<!-- ====== SLIDE 4: DETALLE POR PREGUNTA ====== -->
+<div class="slide" id="s4">
+  <div class="header-bar">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigu_vafcG5saLG0r13cHA0Y9geRGVEjPESWbHTVt9fegBAIB6QsTVDelYSmoTSb69y912nYTf3ckJC6FeS1OcEyvDA_u3rJUlc3T02BzfssvNRrrLOESObIVaeI0SE3yW7GM4J2VqmB9zrDf6xsc3UyIESHks1sJ8OkxxgBxHinI48TTYsTLHSffvDWA/w100-h90/Logo-versi%C3%B3n-final-2022.png" class="logo-left" alt="CI Mint">
+    <span class="header-label">Detalle por Pregunta · 11 Criterios Evaluados</span>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgzHJKDt6pmv91oY1l3emW3b-A8Gemlig1N2JG-OD_MVvelGlN6wsMEfVRmclY-tTtV6fhs7ib2h6AzLD7iRDiTWDCyS-4p0RAvrx3isFAD6jOl7UqAnRfkc-MYje1tnRuN89_46SelyRMj5G4adF3hKNoRY2a4NrsegRIsWt9qSgXWSBtQFr3wYB32YCa/w100-h46/logo%20capte.png" class="logo-right" alt="CAPTE">
+  </div>
+  <div style="margin-bottom:8px;"><div class="title-lg">DETALLE POR PREGUNTA</div><div class="subtitle">Calificación promedio de 17 proveedores en cada criterio</div></div>
+  <div style="display:grid;grid-template-columns:52% 48%;gap:18px;flex-grow:1;min-height:0;">
+    <div style="overflow-y:auto;padding-right:4px;">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Criterio Evaluado</th><th style="text-align:center;">2025-II</th><th style="text-align:center;">2025-I</th><th style="text-align:center;">Var.</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Q1</td><td>Información de cotización fue clara y completa</td><td style="text-align:center;"><strong class="s4h">4.9</strong></td><td style="text-align:center;color:var(--text2);">4.9</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">0.0%</span></td></tr>
+          <tr style="background:rgba(255,183,3,.04);"><td>Q2</td><td><strong style="color:var(--orange);">Tiempo de adjudicación fue adecuado</strong> &#9660;</td><td style="text-align:center;"><strong style="color:var(--orange);">4.8</strong></td><td style="text-align:center;color:var(--text2);">4.9</td><td style="text-align:center;"><span class="badge badge-red" style="font-size:1.09rem;">-2.04%</span></td></tr>
+          <tr><td>Q3</td><td>Comunicación del personal es clara y efectiva</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">4.9</td><td style="text-align:center;"><span class="badge badge-green" style="font-size:1.09rem;">+2.04%</span></td></tr>
+          <tr style="background:rgba(0,230,118,.03);"><td>Q4</td><td><strong style="color:var(--green);">Personal demuestra amabilidad y profesionalismo &#9733;</strong></td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">4.9</td><td style="text-align:center;"><span class="badge badge-green" style="font-size:1.09rem;">+2.04%</span></td></tr>
+          <tr><td>Q5</td><td>Horarios y logística para recepción son adecuados</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">4.9</td><td style="text-align:center;"><span class="badge badge-green" style="font-size:1.09rem;">+2.04%</span></td></tr>
+          <tr><td>Q6</td><td>Proceso de verificación y aceptación es ágil</td><td style="text-align:center;"><strong class="s4h">4.9</strong></td><td style="text-align:center;color:var(--text2);">4.9</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">0.0%</span></td></tr>
+          <tr><td>Q7</td><td>Requisitos para facturas son claros y fáciles</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">5.0</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">0.0%</span></td></tr>
+          <tr><td>Q8</td><td>Proceso de radicación y aprobación es eficiente</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">5.0</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">0.0%</span></td></tr>
+          <tr><td>Q9</td><td>Pagos dentro de los plazos acordados</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">4.9</td><td style="text-align:center;"><span class="badge badge-green" style="font-size:1.09rem;">+2.04%</span></td></tr>
+          <tr><td>Q10</td><td>Satisfacción general con la relación comercial</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">5.0</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">0.0%</span></td></tr>
+          <tr><td>Q11</td><td>Recomendaría a otros ser proveedor de C.I. Mint</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">5.0</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">0.0%</span></td></tr>
+          <tr style="background:rgba(255,215,0,.05);border-top:1px solid var(--gold2);"><td colspan="2" style="font-weight:700;color:var(--gold);">PROMEDIO GENERAL</td><td style="text-align:center;"><strong style="color:var(--gold);font-size:1rem;">4.96</strong></td><td style="text-align:center;color:var(--text2);">4.94</td><td style="text-align:center;"><span class="badge badge-teal" style="font-size:1.09rem;">+0.55%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="flex-grow:1;min-height:0;position:relative;"><canvas id="barChart"></canvas></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="card" style="text-align:center;padding:10px;border-top:2px solid var(--green);">
+          <div style="font-size:1rem;color:var(--green);letter-spacing:1px;">PUNTAJE MÁXIMO</div>
+          <div style="font-size:2rem;font-weight:900;color:var(--green);">5.0</div>
+          <div style="font-size:1.16rem;color:var(--text2);">Q3,Q4,Q5,Q7,Q8,Q9,Q10,Q11</div>
+        </div>
+        <div class="card" style="text-align:center;padding:10px;border-top:2px solid var(--orange);">
+          <div style="font-size:1rem;color:var(--orange);letter-spacing:1px;">ÚNICO POR MEJORAR</div>
+          <div style="font-size:2rem;font-weight:900;color:var(--orange);">4.8</div>
+          <div style="font-size:1.16rem;color:var(--text2);">Q2 · Tiempo adjudicación</div>
+        </div>
+      </div>
+      <div class="insight" style="margin-top:0;font-size:1.08rem;">
+        <strong style="color:var(--gold);">Punto de atención:</strong> Q2 (Tiempo de adjudicación, 4.8) es el único criterio con variación negativa (-2.04%). Requiere optimización del proceso de respuesta a cotizaciones. Los <strong>8 criterios de 11</strong> obtuvieron el máximo posible (5.0).
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>C.I. Colombian Mint S.A.S. | Percepción de Proveedores 2025 – II Semestre</span>
+    <span class="iso-badge">&#9679; ISO 9001:2015 · Cláusula 8.4</span>
+    <span>Slide 4 / 10</span>
+  </div>
+</div>
+
+<!-- ====== SLIDE 5: PROVEEDORES CRÍTICOS ====== -->
+<div class="slide" id="s5">
+  <div class="header-bar">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigu_vafcG5saLG0r13cHA0Y9geRGVEjPESWbHTVt9fegBAIB6QsTVDelYSmoTSb69y912nYTf3ckJC6FeS1OcEyvDA_u3rJUlc3T02BzfssvNRrrLOESObIVaeI0SE3yW7GM4J2VqmB9zrDf6xsc3UyIESHks1sJ8OkxxgBxHinI48TTYsTLHSffvDWA/w100-h90/Logo-versi%C3%B3n-final-2022.png" class="logo-left" alt="CI Mint">
+    <span class="header-label">Calificación Proveedores Críticos · 7 de 19 evaluados</span>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgzHJKDt6pmv91oY1l3emW3b-A8Gemlig1N2JG-OD_MVvelGlN6wsMEfVRmclY-tTtV6fhs7ib2h6AzLD7iRDiTWDCyS-4p0RAvrx3isFAD6jOl7UqAnRfkc-MYje1tnRuN89_46SelyRMj5G4adF3hKNoRY2a4NrsegRIsWt9qSgXWSBtQFr3wYB32YCa/w100-h46/logo%20capte.png" class="logo-right" alt="CAPTE">
+  </div>
+  <div style="margin-bottom:10px;"><div class="title-lg">PROVEEDORES CRÍTICOS</div><div class="subtitle">7 proveedores críticos evaluados · Participación 36.84% (7/19)</div></div>
+  <div style="display:grid;grid-template-columns:60% 40%;gap:18px;flex-grow:1;min-height:0;">
+    <div style="overflow-y:auto;">
+      <table>
+        <thead><tr>
+          <th>Proveedor</th><th>Bien / Servicio</th><th style="text-align:center;">2025-II</th><th style="text-align:center;">2025-I</th><th style="text-align:center;">Var.</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><strong>PROVEEDORES DE FUNDICION MARORA LTDA</strong></td><td style="color:var(--text2);font-size:1.07rem;">Crisoles fundición</td><td style="text-align:center;"><strong class="s4h">4.8</strong></td><td style="text-align:center;color:var(--text2);">n.a.</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">Nuevo</span></td></tr>
+          <tr><td><strong>DETECTO DE COLOMBIA LTDA</strong></td><td style="color:var(--text2);font-size:1.07rem;">Servicio calibración</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">5.0</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">0.0%</span></td></tr>
+          <tr style="background:rgba(0,230,118,.04);"><td><strong style="color:var(--green);">Protokimica SAS &#9650;</strong></td><td style="color:var(--text2);font-size:1.07rem;">Química / Servicio al cliente</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">4.7</td><td style="text-align:center;"><span class="badge badge-green" style="font-size:1.09rem;">+6.38%</span></td></tr>
+          <tr><td><strong>Almacén Gral. Depósitos – Alpopular</strong></td><td style="color:var(--text2);font-size:1.07rem;">Gestión documental</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">4.9</td><td style="text-align:center;"><span class="badge badge-teal" style="font-size:1.09rem;">+2.04%</span></td></tr>
+          <tr><td><strong>Brinks de Colombia SA</strong></td><td style="color:var(--text2);font-size:1.07rem;">Transporte de valores</td><td style="text-align:center;"><strong class="s4h">4.9</strong></td><td style="text-align:center;color:var(--text2);">4.7</td><td style="text-align:center;"><span class="badge badge-green" style="font-size:1.09rem;">+4.26%</span></td></tr>
+          <tr><td><strong>IMPORTACIÓNES METALURGICAS IM S.A.S.</strong></td><td style="color:var(--text2);font-size:1.07rem;">Crisoles para fusión de oro</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">5.0</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">0.0%</span></td></tr>
+          <tr><td><strong>Patricia Manor Place</strong></td><td style="color:var(--text2);font-size:1.07rem;">Logística internacional</td><td style="text-align:center;"><strong class="s4h">4.8</strong></td><td style="text-align:center;color:var(--text2);">n.a.</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">Nuevo</span></td></tr>
+          <tr style="background:rgba(255,215,0,.06);"><td colspan="2" style="font-weight:700;color:var(--gold);">PROMEDIO PROVEEDORES CRÍTICOS</td><td style="text-align:center;"><strong style="color:var(--gold);font-size:1rem;">4.93</strong></td><td style="text-align:center;color:var(--text2);">4.86</td><td style="text-align:center;"><span class="badge badge-teal" style="font-size:1.09rem;">+1.41%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="flex-grow:1;position:relative;min-height:180px;"><canvas id="critChart"></canvas></div>
+      <div class="card" style="padding:14px;border-left:3px solid var(--green);">
+        <div style="font-size:1.16rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Logro Destacado</div>
+        <p style="font-size:1.1rem;color:var(--text2);line-height:1.5;"><strong style="color:var(--text);">Protokimica SAS</strong> logró la mayor mejora individual: <strong style="color:var(--green);">+6.38%</strong> (de 4.7 a 5.0). Evidencia el fortalecimiento activo de la relación con proveedores estratégicos.</p>
+      </div>
+      <div class="insight" style="font-size:1.08rem;">
+        <strong style="color:var(--gold);">Análisis críticos:</strong> El promedio de 4.93 (+1.41% vs 2025-I) confirma que la gestión de proveedores críticos mejora período a período. 5 de 7 críticos calificaron 5.0 — el máximo posible.
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>C.I. Colombian Mint S.A.S. | Percepción de Proveedores 2025 – II Semestre</span>
+    <span class="iso-badge">&#9679; ISO 9001:2015 · Cláusula 8.4.1</span>
+    <span>Slide 5 / 10</span>
+  </div>
+</div>
+
+<!-- ====== SLIDE 6: PROVEEDORES NO CRÍTICOS ====== -->
+<div class="slide" id="s6">
+  <div class="header-bar">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigu_vafcG5saLG0r13cHA0Y9geRGVEjPESWbHTVt9fegBAIB6QsTVDelYSmoTSb69y912nYTf3ckJC6FeS1OcEyvDA_u3rJUlc3T02BzfssvNRrrLOESObIVaeI0SE3yW7GM4J2VqmB9zrDf6xsc3UyIESHks1sJ8OkxxgBxHinI48TTYsTLHSffvDWA/w100-h90/Logo-versi%C3%B3n-final-2022.png" class="logo-left" alt="CI Mint">
+    <span class="header-label">Calificación Proveedores No Críticos · 10 de 65 evaluados</span>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgzHJKDt6pmv91oY1l3emW3b-A8Gemlig1N2JG-OD_MVvelGlN6wsMEfVRmclY-tTtV6fhs7ib2h6AzLD7iRDiTWDCyS-4p0RAvrx3isFAD6jOl7UqAnRfkc-MYje1tnRuN89_46SelyRMj5G4adF3hKNoRY2a4NrsegRIsWt9qSgXWSBtQFr3wYB32YCa/w100-h46/logo%20capte.png" class="logo-right" alt="CAPTE">
+  </div>
+  <div style="margin-bottom:10px;"><div class="title-lg">PROVEEDORES NO CRÍTICOS</div><div class="subtitle">10 proveedores no críticos evaluados · Participación 15.38% (10/65)</div></div>
+  <div style="display:grid;grid-template-columns:58% 42%;gap:18px;flex-grow:1;min-height:0;">
+    <div style="overflow-y:auto;">
+      <table>
+        <thead><tr>
+          <th>Proveedor</th><th>Bien / Servicio</th><th style="text-align:center;">2025-II</th><th style="text-align:center;">2025-I</th><th style="text-align:center;">Var.</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><strong>SERVICIOS EN CLIMATIZACION SAS</strong></td><td style="color:var(--text2);font-size:1.07rem;">Aires acondicionados</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">5.0</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">0.0%</span></td></tr>
+          <tr><td><strong>SYNERGY SUPPLIES SAS</strong></td><td style="color:var(--text2);font-size:1.07rem;">Aluminizados</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">n.a.</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">Nuevo</span></td></tr>
+          <tr><td><strong>WG Technology SAS</strong></td><td style="color:var(--text2);font-size:1.07rem;">Consumibles fundición/espectrómetros</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">n.a.</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">Nuevo</span></td></tr>
+          <tr><td><strong>DISTRIBUIDORA EXTINTORES SIGLO XXI SAS</strong></td><td style="color:var(--text2);font-size:1.07rem;">Extintores y sistemas contra incendios</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">n.a.</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">Nuevo</span></td></tr>
+          <tr><td><strong>GUIMAR SEGURIDAD INDUSTRIAL SAS</strong></td><td style="color:var(--text2);font-size:1.07rem;">Elementos de protección personal</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">n.a.</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">Nuevo</span></td></tr>
+          <tr><td><strong>Kaika S.A.S</strong></td><td style="color:var(--text2);font-size:1.07rem;">Mantenimiento equipos de pesaje</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">4.8</td><td style="text-align:center;"><span class="badge badge-teal" style="font-size:1.09rem;">+4.17%</span></td></tr>
+          <tr><td><strong>Andres Felipe Martínez quintero</strong></td><td style="color:var(--text2);font-size:1.07rem;">Alimentación</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">n.a.</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">Nuevo</span></td></tr>
+          <tr><td><strong>TECNIGAS SAS</strong></td><td style="color:var(--text2);font-size:1.07rem;">Redes de gas y estufas</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">5.0</td><td style="text-align:center;"><span class="badge badge-cyan" style="font-size:1.09rem;">0.0%</span></td></tr>
+          <tr><td><strong>DIPARCO SAS</strong></td><td style="color:var(--text2);font-size:1.07rem;">Tecnología e informática</td><td style="text-align:center;"><strong class="s5">5.0</strong></td><td style="text-align:center;color:var(--text2);">4.9</td><td style="text-align:center;"><span class="badge badge-teal" style="font-size:1.09rem;">+2.04%</span></td></tr>
+          <tr style="background:rgba(255,82,82,.04);"><td><strong style="color:var(--orange);">Filtración y Análisis &#9660;</strong></td><td style="color:var(--text2);font-size:1.07rem;">Consumibles y equipos laboratorio</td><td style="text-align:center;"><strong style="color:var(--orange);">4.8</strong></td><td style="text-align:center;color:var(--text2);">5.0</td><td style="text-align:center;"><span class="badge badge-red" style="font-size:1.09rem;">-4.0%</span></td></tr>
+          <tr style="background:rgba(255,215,0,.06);"><td colspan="2" style="font-weight:700;color:var(--gold);">PROMEDIO NO CRÍTICOS</td><td style="text-align:center;"><strong style="color:var(--gold);font-size:1rem;">4.98</strong></td><td style="text-align:center;color:var(--text2);">4.94</td><td style="text-align:center;"><span class="badge badge-teal" style="font-size:1.09rem;">+0.81%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;justify-content:center;">
+      <div class="card" style="border-top:3px solid var(--green);text-align:center;">
+        <div class="section-label">Promedio No Críticos</div>
+        <div style="font-size:3rem;font-weight:900;color:var(--green);">4.98</div>
+        <div style="font-size:1.07rem;color:var(--text2);">Supera el promedio de críticos (4.93)</div>
+        <div style="margin-top:6px;"><span class="badge badge-teal">+0.81% vs 2025-I</span></div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--cyan);padding:14px;">
+        <div style="font-size:1.16rem;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Distribución de Puntajes</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:1.09rem;color:var(--green);">Score 5.0 — 9 proveedores</span>
+            <span class="badge badge-green">90%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green);" data-w="90"></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <span style="font-size:1.09rem;color:var(--orange);">Score 4.8 — 1 proveedor</span>
+            <span class="badge badge-red">10%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange);" data-w="10"></div></div>
+        </div>
+      </div>
+      <div class="insight" style="font-size:1.08rem;">
+        <strong style="color:var(--gold);">Oportunidad:</strong> Solo el 15.38% de los 65 proveedores no críticos respondió. <strong>Aumentar esta participación</strong> es la principal acción de mejora para 2026, permitiendo una evaluación más representativa del portafolio.
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>C.I. Colombian Mint S.A.S. | Percepción de Proveedores 2025 – II Semestre</span>
+    <span class="iso-badge">&#9679; ISO 9001:2015 · Cláusula 8.4.1</span>
+    <span>Slide 6 / 10</span>
+  </div>
+</div>
+
+<!-- ====== SLIDE 7: VOZ DEL PROVEEDOR - FORTALEZAS ====== -->
+<div class="slide" id="s7">
+  <div class="header-bar">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigu_vafcG5saLG0r13cHA0Y9geRGVEjPESWbHTVt9fegBAIB6QsTVDelYSmoTSb69y912nYTf3ckJC6FeS1OcEyvDA_u3rJUlc3T02BzfssvNRrrLOESObIVaeI0SE3yW7GM4J2VqmB9zrDf6xsc3UyIESHks1sJ8OkxxgBxHinI48TTYsTLHSffvDWA/w100-h90/Logo-versi%C3%B3n-final-2022.png" class="logo-left" alt="CI Mint">
+    <span class="header-label">La Voz del Proveedor · Reconocimientos y Fortalezas</span>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgzHJKDt6pmv91oY1l3emW3b-A8Gemlig1N2JG-OD_MVvelGlN6wsMEfVRmclY-tTtV6fhs7ib2h6AzLD7iRDiTWDCyS-4p0RAvrx3isFAD6jOl7UqAnRfkc-MYje1tnRuN89_46SelyRMj5G4adF3hKNoRY2a4NrsegRIsWt9qSgXWSBtQFr3wYB32YCa/w100-h46/logo%20capte.png" class="logo-right" alt="CAPTE">
+  </div>
+  <div style="margin-bottom:10px;"><div class="title-lg">LA VOZ DEL PROVEEDOR</div><div class="subtitle">Testimonios directos — Lo que valoran de C.I. Colombian Mint</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;flex-grow:1;align-content:start;overflow-y:auto;">
+    <div class="quote-card">
+      <span class="quote-score"><span class="badge badge-green">5.0 ★</span></span>
+      <p class="quote-text">"Las respuestas son rápidas y claras. Todo fue muy fluido desde el inicio hasta el cierre de la negociación."</p>
+      <div class="quote-author">SYNERGY SUPPLIES SAS · Luz Zeenaat Pal Forero</div>
+    </div>
+    <div class="quote-card">
+      <span class="quote-score"><span class="badge badge-green">5.0 ★</span></span>
+      <p class="quote-text">"Excelente persona, con quien se crea una comunicación clara, respetuosa y muy agradable. Trabajar con ella (Sara) siempre es una experiencia positiva."</p>
+      <div class="quote-author">GUIMAR SEGURIDAD INDUSTRIAL SAS · Kelly Castrillón</div>
+    </div>
+    <div class="quote-card">
+      <span class="quote-score"><span class="badge badge-green">5.0 ★</span></span>
+      <p class="quote-text">"La negociación es clara, basada en cotización previa, con comunicación constante y asertiva. Son clientes pareto para Protokimica."</p>
+      <div class="quote-author">Protokimica SAS · Rosa Uribe</div>
+    </div>
+    <div class="quote-card">
+      <span class="quote-score"><span class="badge badge-green">5.0 ★</span></span>
+      <p class="quote-text">"Se tiene buena comunicación con el equipo de C.I. Colombian Mint. La contratación fue clara y adecuada. Adecuados tiempos para proceso de facturación y pagos."</p>
+      <div class="quote-author">Almacén General Depósitos - Alpopular · Juan D. Ortega</div>
+    </div>
+    <div class="quote-card">
+      <span class="quote-score"><span class="badge badge-teal">4.9 ★</span></span>
+      <p class="quote-text">"El equipo de C.I. Colombian Mint ha estado dispuesto a implementar oportunidades de mejora, cambiar procesos y aportar para que sean cada vez más ágiles y seguros."</p>
+      <div class="quote-author">Brinks de Colombia SA · Karen Vellojin Soler</div>
+    </div>
+    <div class="quote-card">
+      <span class="quote-score"><span class="badge badge-green">5.0 ★</span></span>
+      <p class="quote-text">"Hemos tenido muy buena comunicación directa con los encargados de pedidos y autorizaciones de pagos. El personal de vigilancia siempre cumple con los parámetros de seguridad."</p>
+      <div class="quote-author">Andres Felipe Martínez quintero · Proveedor Alimentación</div>
+    </div>
+  </div>
+  <div class="insight" style="margin-top:10px;">
+    <strong style="color:var(--gold);">Patrón dominante en la voz del proveedor:</strong> La <strong>comunicación clara, oportuna y asertiva</strong> del equipo de Compras es el diferenciador más valorado. Los proveedores perciben a C.I. Colombian Mint como un <strong>cliente confiable, organizado y profesional</strong>, lo que fortalece la cadena de suministro desde la base de la relación.
+  </div>
+  <div class="slide-footer">
+    <span>C.I. Colombian Mint S.A.S. | Percepción de Proveedores 2025 – II Semestre</span>
+    <span class="iso-badge">&#9679; ISO 9001:2015 · Enfoque en Partes Interesadas</span>
+    <span>Slide 7 / 10</span>
+  </div>
+</div>
+
+<!-- ====== SLIDE 8: CANALES DE COMUNICACIÓN Y SUGERENCIAS ====== -->
+<div class="slide" id="s8">
+  <div class="header-bar">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigu_vafcG5saLG0r13cHA0Y9geRGVEjPESWbHTVt9fegBAIB6QsTVDelYSmoTSb69y912nYTf3ckJC6FeS1OcEyvDA_u3rJUlc3T02BzfssvNRrrLOESObIVaeI0SE3yW7GM4J2VqmB9zrDf6xsc3UyIESHks1sJ8OkxxgBxHinI48TTYsTLHSffvDWA/w100-h90/Logo-versi%C3%B3n-final-2022.png" class="logo-left" alt="CI Mint">
+    <span class="header-label">Canales de Comunicación · Sugerencias de Mejora</span>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgzHJKDt6pmv91oY1l3emW3b-A8Gemlig1N2JG-OD_MVvelGlN6wsMEfVRmclY-tTtV6fhs7ib2h6AzLD7iRDiTWDCyS-4p0RAvrx3isFAD6jOl7UqAnRfkc-MYje1tnRuN89_46SelyRMj5G4adF3hKNoRY2a4NrsegRIsWt9qSgXWSBtQFr3wYB32YCa/w100-h46/logo%20capte.png" class="logo-right" alt="CAPTE">
+  </div>
+  <div style="margin-bottom:10px;"><div class="title-lg">COMUNICACIÓN Y SUGERENCIAS</div><div class="subtitle">Canales usados por los proveedores · Retroalimentación para mejorar</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;flex-grow:1;min-height:0;">
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card" style="border-top:3px solid var(--cyan);">
+        <div class="section-label" style="margin-bottom:12px;">Canales de Comunicación Utilizados (n=17)</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:1.15rem;font-weight:700;">&#128241; WhatsApp</span>
+              <span style="font-size:1.15rem;color:var(--cyan);font-weight:700;">14 / 82.4%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--cyan);" data-w="82.4"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:1.15rem;font-weight:700;">&#128140; Correo Electrónico</span>
+              <span style="font-size:1.15rem;color:var(--gold);font-weight:700;">13 / 76.5%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--gold);" data-w="76.5"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:1.15rem;font-weight:700;">&#128222; Telefónico</span>
+              <span style="font-size:1.15rem;color:var(--teal);font-weight:700;">2 / 11.8%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--teal);" data-w="11.8"></div></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding:10px;background:rgba(0,210,255,.06);border-radius:10px;font-size:1.09rem;color:var(--text2);">
+          <strong style="color:var(--cyan);">Nota:</strong> El 70.6% de los proveedores usa <strong>ambos canales</strong> (WhatsApp + Correo), lo que indica una estrategia de comunicación redundante y efectiva. Consolidar el correo como canal oficial para documentos formales.
+        </div>
+      </div>
+      <div style="position:relative;min-height:160px;flex-grow:1;"><canvas id="channelChart"></canvas></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card" style="border-top:3px solid var(--gold);padding:16px;">
+        <div class="section-label" style="margin-bottom:10px;">Sugerencias Recibidas</div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+          <div style="font-size:4rem;font-weight:900;color:var(--cyan);line-height:1;">1</div>
+          <div style="font-size:1.1rem;color:var(--text2);">sugerencia constructiva de mejora de los 17 proveedores — reflejo de un proceso que ya opera con excelencia.</div>
+        </div>
+        <div class="plan-item" style="border-left-color:var(--gold);">
+          <div class="plan-num" style="background:var(--gold);color:#000;">!</div>
+          <div>
+            <strong style="color:var(--gold);">Mayor Participación en Procesos de Compra</strong>
+            <p style="font-size:1.09rem;color:var(--text2);margin-top:6px;line-height:1.5;">"Para 2026, nos tengan presente con mayor participación en los procesos de compra."</p>
+            <div style="margin-top:8px;"><span class="badge badge-gold">DIPARCO SAS · Andrea Ospina</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--green);padding:16px;">
+        <div class="section-label" style="margin-bottom:10px;">Reconocimientos Adicionales</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:var(--green2);border-radius:8px;padding:8px 12px;font-size:1.09rem;border-left:3px solid var(--green);">
+            "Excelente clientes y un adecuado manejo de crédito." — DIPARCO SAS
+          </div>
+          <div style="background:var(--green2);border-radius:8px;padding:8px 12px;font-size:1.09rem;border-left:3px solid var(--green);">
+            "Se cumple lo pactado y justo a tiempo." — Protokimica SAS
+          </div>
+          <div style="background:var(--green2);border-radius:8px;padding:8px 12px;font-size:1.09rem;border-left:3px solid var(--green);">
+            "La negociación es clara basada en cotización previa." — Protokimica SAS
+          </div>
+        </div>
+      </div>
+      <div class="insight" style="font-size:1.08rem;">
+        <strong style="color:var(--gold);">Señal positiva:</strong> Recibir solo 1 sugerencia de mejora en 17 respuestas indica que el proceso de compras opera <strong>sin puntos de fricción significativos</strong> percibidos por los proveedores. La confianza y transparencia en la relación son sólidas.
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>C.I. Colombian Mint S.A.S. | Percepción de Proveedores 2025 – II Semestre</span>
+    <span class="iso-badge">&#9679; ISO 9001:2015 · Mejora Continua 10.3</span>
+    <span>Slide 8 / 10</span>
+  </div>
+</div>
+
+<!-- ====== SLIDE 9: PLAN DE MEJORAMIENTO 2026 ====== -->
+<div class="slide" id="s9">
+  <div class="header-bar">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigu_vafcG5saLG0r13cHA0Y9geRGVEjPESWbHTVt9fegBAIB6QsTVDelYSmoTSb69y912nYTf3ckJC6FeS1OcEyvDA_u3rJUlc3T02BzfssvNRrrLOESObIVaeI0SE3yW7GM4J2VqmB9zrDf6xsc3UyIESHks1sJ8OkxxgBxHinI48TTYsTLHSffvDWA/w100-h90/Logo-versi%C3%B3n-final-2022.png" class="logo-left" alt="CI Mint">
+    <span class="header-label">Plan de Mejoramiento · Ejes de Acción 2026</span>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgzHJKDt6pmv91oY1l3emW3b-A8Gemlig1N2JG-OD_MVvelGlN6wsMEfVRmclY-tTtV6fhs7ib2h6AzLD7iRDiTWDCyS-4p0RAvrx3isFAD6jOl7UqAnRfkc-MYje1tnRuN89_46SelyRMj5G4adF3hKNoRY2a4NrsegRIsWt9qSgXWSBtQFr3wYB32YCa/w100-h46/logo%20capte.png" class="logo-right" alt="CAPTE">
+  </div>
+  <div style="margin-bottom:10px;"><div class="title-lg">PLAN DE MEJORAMIENTO 2026</div><div class="subtitle">4 ejes de acción · Basado en resultados 2025-II · Alineado ISO 9001:2015</div></div>
+  <div style="display:grid;grid-template-columns:1fr;gap:12px;flex-grow:1;align-content:center;">
+    <div class="plan-item" style="border-left-color:var(--gold);">
+      <div class="plan-num" style="width:40px;height:40px;font-size:1.1rem;">1</div>
+      <div style="flex-grow:1;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <strong style="font-size:1.12rem;color:var(--gold);">Eje Participación: Ampliar la Base de Evaluación</strong>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span class="badge badge-cyan">Líder Compras</span><span class="badge badge-cyan">Equipo Compras</span></div>
+        </div>
+        <p style="font-size:1.09rem;color:var(--text2);margin-top:7px;line-height:1.6;"><strong style="color:var(--text);">Brecha:</strong> Solo 17 de 84 proveedores respondieron (20.24%). Los no críticos tuvieron solo 15.38% de participación. <strong style="color:var(--text);">Acción:</strong> Envío proactivo de encuesta con seguimiento personalizado, recordatorios a 7 y 3 días, e inclusión en comunicaciones de cierre de contrato. Meta: ≥ 50% participación en 2026-I.</p>
+        <div style="margin-top:7px;display:flex;gap:6px;flex-wrap:wrap;"><span class="badge badge-gold">Q1 2026 · Semestral</span><span class="badge" style="background:rgba(255,215,0,.1);color:#fff176;border:1px solid #fff176;">Meta: 50% participación</span></div>
+      </div>
+    </div>
+    <div class="plan-item" style="border-left-color:var(--orange);">
+      <div class="plan-num" style="background:var(--orange);color:#000;width:40px;height:40px;font-size:1.1rem;">2</div>
+      <div style="flex-grow:1;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <strong style="font-size:1.12rem;color:var(--orange);">Eje Agilidad: Tiempos de Adjudicación y Respuesta</strong>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span class="badge badge-gold" style="color:var(--orange);border-color:var(--orange);">Líder Compras</span><span class="badge badge-gold" style="color:var(--orange);border-color:var(--orange);">Proceso Contratación</span></div>
+        </div>
+        <p style="font-size:1.09rem;color:var(--text2);margin-top:7px;line-height:1.6;"><strong style="color:var(--text);">Brecha:</strong> Q2 (Tiempo de adjudicación) bajó de 4.9 a 4.8 (-2.04%), el único criterio con variación negativa. <strong style="color:var(--text);">Acción:</strong> Estandarizar tiempos de respuesta a cotizaciones (máx. 72h). Implementar alertas automáticas de vencimiento de solicitudes. Tablero de seguimiento de tiempos de respuesta en proceso de compras.</p>
+        <div style="margin-top:7px;display:flex;gap:6px;flex-wrap:wrap;"><span class="badge badge-red" style="color:var(--orange);border-color:var(--orange);">Q1 2026 · Seguimiento trimestral</span><span class="badge" style="background:rgba(255,183,3,.1);color:#ffcc02;border:1px solid #ffcc02;">Meta: Q2 ≥ 4.9</span></div>
+      </div>
+    </div>
+    <div class="plan-item" style="border-left-color:var(--green);">
+      <div class="plan-num" style="background:var(--green);color:#000;width:40px;height:40px;font-size:1.1rem;">3</div>
+      <div style="flex-grow:1;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <strong style="font-size:1.12rem;color:var(--green);">Eje Sostenibilidad: Mantener la Excelencia en Comunicación y Pagos</strong>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span class="badge badge-green">Equipo Compras</span><span class="badge badge-green">Tesorería</span></div>
+        </div>
+        <p style="font-size:1.09rem;color:var(--text2);margin-top:7px;line-height:1.6;"><strong style="color:var(--text);">Fortaleza:</strong> Comunicación, facturación y pagos = 5.0 sostenido. <strong style="color:var(--text);">Acción:</strong> Documentar las buenas prácticas de comunicación del equipo (protocolo de respuesta, tono, tiempos). Mantener la política de pagos a tiempo como ventaja competitiva ante proveedores estratégicos. Programa de reconocimiento interno al equipo de compras.</p>
+        <div style="margin-top:7px;display:flex;gap:6px;flex-wrap:wrap;"><span class="badge badge-green">Continuo 2026</span><span class="badge" style="background:rgba(0,230,118,.1);color:#69f0ae;border:1px solid #69f0ae;">Meta: 5.0 sostenido</span></div>
+      </div>
+    </div>
+    <div class="plan-item" style="border-left-color:var(--cyan);">
+      <div class="plan-num" style="background:var(--cyan);color:#000;width:40px;height:40px;font-size:1.1rem;">4</div>
+      <div style="flex-grow:1;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <strong style="font-size:1.12rem;color:var(--cyan);">Eje Visibilidad: Consolidar Canal Formal con Proveedores</strong>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;"><span class="badge badge-cyan">Líder Compras</span><span class="badge badge-cyan">SGD / Calidad</span></div>
+        </div>
+        <p style="font-size:1.09rem;color:var(--text2);margin-top:7px;line-height:1.6;"><strong style="color:var(--text);">Brecha:</strong> WhatsApp domina (82.4%) pero no garantiza trazabilidad documental. <strong style="color:var(--text);">Acción:</strong> Formalizar el correo electrónico como canal oficial para documentos, cotizaciones y confirmaciones. Incluir cláusula de canal formal en órdenes de compra. Crear directorio actualizado de contactos de proveedores. Impulsar mayor participación de proveedores no críticos en próximos procesos.</p>
+        <div style="margin-top:7px;display:flex;gap:6px;flex-wrap:wrap;"><span class="badge badge-cyan">Q1-Q2 2026</span><span class="badge" style="background:rgba(0,210,255,.1);color:#80d8ff;border:1px solid #80d8ff;">Trazabilidad: 100%</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>C.I. Colombian Mint S.A.S. | Percepción de Proveedores 2025 – II Semestre</span>
+    <span class="iso-badge">&#9679; ISO 9001:2015 · Cláusula 10.1</span>
+    <span>Slide 9 / 10</span>
+  </div>
+</div>
+
+<!-- ====== SLIDE 10: COMPROMISOS Y CIERRE ====== -->
+<div class="slide" id="s10">
+  <div class="header-bar">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigu_vafcG5saLG0r13cHA0Y9geRGVEjPESWbHTVt9fegBAIB6QsTVDelYSmoTSb69y912nYTf3ckJC6FeS1OcEyvDA_u3rJUlc3T02BzfssvNRrrLOESObIVaeI0SE3yW7GM4J2VqmB9zrDf6xsc3UyIESHks1sJ8OkxxgBxHinI48TTYsTLHSffvDWA/w100-h90/Logo-versi%C3%B3n-final-2022.png" class="logo-left" alt="CI Mint">
+    <span class="header-label">Compromisos y Cierre · Comité de Compras 2026</span>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgzHJKDt6pmv91oY1l3emW3b-A8Gemlig1N2JG-OD_MVvelGlN6wsMEfVRmclY-tTtV6fhs7ib2h6AzLD7iRDiTWDCyS-4p0RAvrx3isFAD6jOl7UqAnRfkc-MYje1tnRuN89_46SelyRMj5G4adF3hKNoRY2a4NrsegRIsWt9qSgXWSBtQFr3wYB32YCa/w100-h46/logo%20capte.png" class="logo-right" alt="CAPTE">
+  </div>
+  <div style="flex-grow:1;display:flex;flex-direction:column;justify-content:center;">
+    <div style="text-align:center;margin-bottom:20px;">
+      <div class="title-xl" style="font-size:clamp(2rem,4vw,3rem);color:var(--gold);">COMPROMISOS 2026</div>
+      <div class="subtitle">Consolidando la excelencia · Del diagnóstico a la acción</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px;">
+      <div class="card" style="text-align:center;border-top:3px solid var(--gold);">
+        <div style="font-size:1.8rem;margin-bottom:6px;">&#127942;</div>
+        <div class="title-md" style="font-size:1rem;color:var(--gold);">META PERCEPCIÓN</div>
+        <div style="font-size:3.2rem;font-weight:900;color:var(--gold);">&ge; 4.97</div>
+        <div style="font-size:1.05rem;color:var(--text2);margin-top:4px;">Superar el 4.96 actual en todos los períodos 2026</div>
+      </div>
+      <div class="card" style="text-align:center;border-top:3px solid var(--cyan);">
+        <div style="font-size:1.8rem;margin-bottom:6px;">&#128202;</div>
+        <div class="title-md" style="font-size:1rem;">META PARTICIPACIÓN</div>
+        <div style="font-size:3.2rem;font-weight:900;color:var(--cyan);">&ge; 50%</div>
+        <div style="font-size:1.05rem;color:var(--text2);margin-top:4px;">De 20% actual a mínimo 50% del total de proveedores</div>
+      </div>
+      <div class="card" style="text-align:center;border-top:3px solid var(--green);">
+        <div style="font-size:1.8rem;margin-bottom:6px;">&#127775;</div>
+        <div class="title-md" style="font-size:1rem;color:var(--green);">META PROMOTORES</div>
+        <div style="font-size:3.2rem;font-weight:900;color:var(--green);">&ge; 85%</div>
+        <div style="font-size:1.05rem;color:var(--text2);margin-top:4px;">Incrementar promotores (5.0) del 76.5% al 85%</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div style="background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.25);border-radius:16px;padding:18px;">
+        <div style="font-size:1.15rem;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Logros Destacados 2025-II</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;">
+          <li style="font-size:1.1rem;color:var(--text2);">&#9989; <strong>4.96/5.0</strong> — El mejor resultado en percepción de proveedores</li>
+          <li style="font-size:1.1rem;color:var(--text2);">&#9989; <strong>0 proveedores</strong> en plan de mejora — Hito histórico</li>
+          <li style="font-size:1.1rem;color:var(--text2);">&#9989; <strong>76.5% promotores</strong> (5.0) — Alta lealtad y confianza</li>
+          <li style="font-size:1.1rem;color:var(--text2);">&#9989; <strong>Facturación y Pagos 5.0</strong> — Cumplimiento total de compromisos</li>
+          <li style="font-size:1.1rem;color:var(--text2);">&#9989; <strong>Comunicación 5.0</strong> — Equipo reconocido por claridad y amabilidad</li>
+          <li style="font-size:1.1rem;color:var(--text2);">&#9989; <strong>+6.38% Protokimica</strong> — Mayor mejora individual del período</li>
+        </ul>
+      </div>
+      <div style="background:rgba(0,230,118,.04);border:1px solid rgba(0,230,118,.2);border-radius:16px;padding:18px;">
+        <div style="font-size:1.15rem;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Compromisos del Proceso de Compras</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;">
+          <li style="font-size:1.1rem;color:var(--text2);">&#128073; <strong>Campaña de participación</strong> para 2026-I: encuesta a ≥42 proveedores</li>
+          <li style="font-size:1.1rem;color:var(--text2);">&#128073; <strong>Reducir tiempo de adjudicación</strong> — respuesta en máx. 72 horas</li>
+          <li style="font-size:1.1rem;color:var(--text2);">&#128073; <strong>Canal formal de documentos</strong> — correo como canal oficial de compras</li>
+          <li style="font-size:1.1rem;color:var(--text2);">&#128073; <strong>Protocolo de comunicación</strong> documentado y socializado al equipo</li>
+          <li style="font-size:1.1rem;color:var(--text2);">&#128073; <strong>Mayor visibilidad</strong> de proveedores no críticos en procesos de compra</li>
+        </ul>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:16px;padding:14px;background:rgba(255,215,0,.05);border-radius:14px;border:1px solid rgba(255,215,0,.2);">
+      <p style="font-size:1.08rem;color:var(--text2);font-style:italic;">"Un proveedor que percibe excelencia en su cliente, entrega excelencia a cambio.<br>El proceso de Compras es el primer eslabón de la cadena de valor de C.I. Colombian Mint."</p>
+      <p style="font-size:1.09rem;color:var(--gold);margin-top:6px;letter-spacing:1px;">— C.I. COLOMBIAN MINT · PROCESO DE COMPRAS &amp; SISTEMAS DE GESTIÓN DE CALIDAD</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>C.I. Colombian Mint S.A.S. | Percepción de Proveedores 2025 – II Semestre</span>
+    <span class="iso-badge">&#9679; ISO 9001:2015 · Mejora Continua</span>
+    <span>Slide 10 / 10</span>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="nav">
+  <button class="btn" id="prevBtn" disabled>&#8592; Anterior</button>
+  <span id="slideNum">1 / 10</span>
+  <button class="btn" id="nextBtn">Siguiente &#8594;</button>
+</div>
+
+<script>
+/* ========== PARTICLES ========== */
+(function(){
+  const canvas=document.getElementById('particles');
+  const ctx=canvas.getContext('2d');
+  let W,H,particles;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  function mkP(){return{x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,a:Math.random()*.35+.05,c:Math.random()<.6?'0,210,255':'255,215,0'};}
+  function init(){resize();particles=Array.from({length:90},mkP);}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${p.c},${p.a})`;ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',init);
+  init();draw();
+})();
+
+/* ========== SLIDE ENGINE ========== */
+const slides=document.querySelectorAll('.slide');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const slideNum=document.getElementById('slideNum');
+const progressBar=document.getElementById('progressBar');
+let cur=0;
+const TOTAL=slides.length;
+
+function easeOut(t){return 1-(1-t)*(1-t)*(1-t);}
+
+function animateBars(slide){
+  slide.querySelectorAll('.bar-fill[data-w]').forEach(b=>{
+    b.style.width='0%';
+    setTimeout(()=>{b.style.width=b.getAttribute('data-w')+'%';},200);
+  });
+}
+
+function animateCounters(slide){
+  slide.querySelectorAll('[id^="k"]').forEach(el=>{
+    const target=parseFloat(el.getAttribute('data-target')||el.textContent);
+    if(isNaN(target))return;
+    el.setAttribute('data-target',target);
+    const isInt=Number.isInteger(target);
+    const suffix=el.getAttribute('data-suffix')||'';
+    let dur=1200,t0=null;
+    function step(t){
+      if(!t0)t0=t;
+      const p=Math.min((t-t0)/dur,1);
+      const v=target*easeOut(p);
+      if(suffix==='%')el.textContent=Math.round(v)+'%';
+      else el.textContent=isInt?Math.round(v):v.toFixed(2);
+      if(p<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+function showSlide(i){
+  slides[cur].classList.remove('active');
+  cur=i;
+  slides[cur].classList.add('active');
+  prevBtn.disabled=cur===0;
+  nextBtn.disabled=cur===TOTAL-1;
+  slideNum.textContent=`${cur+1} / ${TOTAL}`;
+  progressBar.style.width=`${((cur+1)/TOTAL)*100}%`;
+  animateBars(slides[cur]);
+  animateCounters(slides[cur]);
+  initSlideCharts(cur);
+}
+
+prevBtn.addEventListener('click',()=>{if(cur>0)showSlide(cur-1);});
+nextBtn.addEventListener('click',()=>{if(cur<TOTAL-1)showSlide(cur+1);});
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown'){if(cur<TOTAL-1)showSlide(cur+1);}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){if(cur>0)showSlide(cur-1);}
+  if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+});
+
+/* ========== KPI COUNTERS SETUP ========== */
+const k1=document.getElementById('k1');if(k1)k1.setAttribute('data-target','4.96');
+const k2=document.getElementById('k2');if(k2)k2.setAttribute('data-target','17');
+const k3=document.getElementById('k3');if(k3)k3.setAttribute('data-target','13');
+const k4=document.getElementById('k4');if(k4)k4.setAttribute('data-target','4');
+const k5=document.getElementById('k5');if(k5)k5.setAttribute('data-target','0');
+
+/* ========== CHARTS ========== */
+Chart.defaults.color='#bbb';
+Chart.defaults.font.family='Montserrat';
+Chart.defaults.font.size=13;
+
+let charts={};
+
+function initSlideCharts(idx){
+  /* ---- SLIDE 3: Radar ---- */
+  if(idx===2&&!charts.radar){
+    const ctx=document.getElementById('radarChart').getContext('2d');
+    charts.radar=new Chart(ctx,{
+      type:'radar',
+      data:{
+        labels:['Contratación\n& Negociación','Comunicación\n& Relación','Operativos\n& Logísticos','Facturación\n& Pagos','Satisfacción\nGeneral'],
+        datasets:[
+          {label:'2025-II',data:[4.85,5.0,4.95,5.0,5.0],
+           backgroundColor:'rgba(0,210,255,0.18)',borderColor:'#00D2FF',
+           pointBackgroundColor:'#00D2FF',pointBorderColor:'#fff',pointRadius:6,borderWidth:2},
+          {label:'2025-I',data:[4.90,4.90,4.90,4.97,5.0],
+           backgroundColor:'rgba(255,215,0,0.08)',borderColor:'rgba(255,215,0,0.5)',
+           borderDash:[5,5],pointBackgroundColor:'#FFD700',pointRadius:4,borderWidth:1.5}
+        ]
+      },
+      options:{
+        maintainAspectRatio:false,
+        scales:{r:{angleLines:{color:'rgba(255,255,255,.07)'},grid:{color:'rgba(255,255,255,.07)'},
+          pointLabels:{font:{size:12,weight:'600'},color:'#00D2FF'},
+          suggestedMin:4.5,suggestedMax:5.0,ticks:{display:false,stepSize:.1}}},
+        plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:14,padding:14,color:'#bbb',font:{size:12}}}}
+      }
+    });
+  }
+
+  /* ---- SLIDE 4: Bar horizontal ---- */
+  if(idx===3&&!charts.bar){
+    const ctx=document.getElementById('barChart').getContext('2d');
+    const cols=['#FFB703','#00E676','#00E676','#00E676','#00E676','#06D6A0','#00E676','#00E676','#00E676','#00E676','#00E676'];
+    charts.bar=new Chart(ctx,{
+      type:'bar',
+      data:{
+        labels:['Q1 Cotización','Q2 Adjudicación','Q3 Comunicación','Q4 Amabilidad','Q5 Horarios/Log.','Q6 Verificación','Q7 Req. Facturas','Q8 Radicación','Q9 Pagos','Q10 Satisfacción','Q11 Recomendaría'],
+        datasets:[
+          {label:'2025-II',data:[4.9,4.8,5.0,5.0,5.0,4.9,5.0,5.0,5.0,5.0,5.0],
+           backgroundColor:cols,borderRadius:5,maxBarThickness:22},
+          {label:'2025-I',data:[4.9,4.9,4.9,4.9,4.9,4.9,5.0,5.0,4.9,5.0,5.0],
+           backgroundColor:'rgba(255,255,255,.07)',borderRadius:5,maxBarThickness:22}
+        ]
+      },
+      options:{
+        maintainAspectRatio:false,indexAxis:'y',
+        scales:{
+          x:{min:4.5,max:5.1,grid:{color:'rgba(255,255,255,.05)'},ticks:{stepSize:.1}},
+          y:{grid:{display:false},ticks:{font:{size:12}}}
+        },
+        plugins:{legend:{display:true,position:'top',labels:{boxWidth:13,padding:13,color:'#bbb',font:{size:12}}}}
+      }
+    });
+  }
+
+  /* ---- SLIDE 5: Critical providers bar ---- */
+  if(idx===4&&!charts.crit){
+    const ctx=document.getElementById('critChart').getContext('2d');
+    charts.crit=new Chart(ctx,{
+      type:'bar',
+      data:{
+        labels:['MARORA','DETECTO','PROTOKI.','ALPOPULAR','BRINKS','IMP. METAL.','P. MANOR'],
+        datasets:[{
+          label:'Promedio 2025-II',
+          data:[4.8,5.0,5.0,5.0,4.9,5.0,4.8],
+          backgroundColor:['#06D6A0','#00E676','#00E676','#00E676','#06D6A0','#00E676','#06D6A0'],
+          borderRadius:6,maxBarThickness:30
+        }]
+      },
+      options:{
+        maintainAspectRatio:false,
+        scales:{
+          y:{min:4.5,max:5.1,grid:{color:'rgba(255,255,255,.05)'},ticks:{stepSize:.1}},
+          x:{grid:{display:false},ticks:{font:{size:12}}}
+        },
+        plugins:{legend:{display:false}}
+      }
+    });
+  }
+
+  /* ---- SLIDE 8: Channel doughnut ---- */
+  if(idx===7&&!charts.channel){
+    const ctx=document.getElementById('channelChart').getContext('2d');
+    charts.channel=new Chart(ctx,{
+      type:'doughnut',
+      data:{
+        labels:['WhatsApp (82.4%)','Correo E. (76.5%)','Telefónico (11.8%)'],
+        datasets:[{
+          data:[14,13,2],
+          backgroundColor:['rgba(0,210,255,.7)','rgba(255,215,0,.7)','rgba(6,214,160,.7)'],
+          borderColor:['#00D2FF','#FFD700','#06D6A0'],
+          borderWidth:2,hoverOffset:8
+        }]
+      },
+      options:{
+        maintainAspectRatio:false,cutout:'60%',
+        plugins:{
+          legend:{display:true,position:'right',labels:{boxWidth:14,padding:12,color:'#bbb',font:{size:12}}},
+          tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} proveedores`}}
+        }
+      }
+    });
+  }
+}
+
+/* ========== INIT ========== */
+animateBars(slides[0]);
+animateCounters(slides[0]);
+</script>
+</body>
+</html>
